@@ -1,0 +1,64 @@
+<div class="personalizacao-container">
+  <div class="personalizacao-header">
+    <h1>Personalize seu Presente</h1>
+    <div class="progress-bar">
+      <div class="progress-steps">
+        <div 
+          *ngFor="let passo of [1,2,3,4,5,6]; let i = index" 
+          class="step"
+          [class.active]="passoAtual === passo"
+          [class.completed]="passoAtual > passo"
+          (click)="irParaPasso(passo)">
+          <span class="step-number">{{ passo }}</span>
+        </div>
+      </div>
+      <div class="progress-fill" [style.width.%]="(passoAtual / totalPassos) * 100"></div>
+    </div>
+  </div>
+
+  <div class="personalizacao-content">
+    <!-- Passo 1: Identificação -->
+    <app-passo-identificacao 
+      *ngIf="passoAtual === 1"
+      (concluido)="onPassoConcluido()"
+      (voltar)="onVoltar()">
+    </app-passo-identificacao>
+
+    <!-- Passo 2: Cartão Cortesia -->
+    <app-passo-cartao-cortesia 
+      *ngIf="passoAtual === 2"
+      (concluido)="onPassoConcluido()"
+      (voltar)="onVoltar()">
+    </app-passo-cartao-cortesia>
+
+    <!-- Passo 3: Tipo de Mensagem -->
+    <app-passo-tipo-mensagem 
+      *ngIf="passoAtual === 3"
+      (concluido)="onPassoConcluido()"
+      (voltar)="onVoltar()">
+    </app-passo-tipo-mensagem>
+
+    <!-- Passo 4: Intenção -->
+    <app-passo-intencao 
+      *ngIf="passoAtual === 4"
+      (concluido)="onPassoConcluido()"
+      (voltar)="onVoltar()">
+    </app-passo-intencao>
+
+    <!-- Passo 5: Embalagem -->
+    <app-passo-embalagem 
+      *ngIf="passoAtual === 5"
+      (concluido)="onPassoConcluido()"
+      (voltar)="onVoltar()">
+    </app-passo-embalagem>
+
+    <!-- Passo 6: Revisão -->
+    <app-passo-revisao 
+      *ngIf="passoAtual === 6"
+      [urlDominioWP]="urlDominioWP"
+      (concluido)="onPassoConcluido()"
+      (voltar)="onVoltar()">
+    </app-passo-revisao>
+  </div>
+</div>
+

@@ -1,0 +1,40 @@
+<div class="passo-container">
+  <div class="passo-header">
+    <h2>Escolha a cor do seu cartão cortesia</h2>
+  </div>
+
+  <div class="passo-content">
+    <div class="cores-grid">
+      <div 
+        *ngFor="let cor of coresCartao" 
+        class="cor-item"
+        [class.selected]="corSelecionada === cor.id"
+        (click)="selecionarCor(cor.id)">
+        <div 
+          class="cor-swatch"
+          [style.background-color]="cor.cor"
+          [class.floral]="cor.padrao === 'floral'"
+          [class.metallic]="cor.padrao === 'metallic'">
+          <span *ngIf="cor.padrao === 'floral'" class="pattern-icon">🌸</span>
+        </div>
+        <span class="cor-nome">{{ cor.nome }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="passo-actions">
+    <button 
+      type="button" 
+      class="btn btn-secondary" 
+      (click)="voltarPasso()">
+      VOLTAR
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-primary" 
+      (click)="avancar()">
+      AVANÇAR
+    </button>
+  </div>
+</div>
+

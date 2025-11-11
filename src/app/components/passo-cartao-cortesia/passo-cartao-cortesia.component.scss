@@ -1,0 +1,133 @@
+.passo-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 500px;
+}
+
+.passo-header {
+  text-align: center;
+  margin-bottom: 30px;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+}
+
+.passo-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 0;
+}
+
+.cores-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.cor-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &.selected {
+    .cor-swatch {
+      border: 3px solid #d32f2f;
+      box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2);
+    }
+
+    .cor-nome {
+      font-weight: 600;
+      color: #d32f2f;
+    }
+  }
+}
+
+.cor-swatch {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &.floral {
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.3) 2px, transparent 2px),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.3) 2px, transparent 2px);
+    background-size: 20px 20px;
+  }
+
+  &.metallic {
+    background: linear-gradient(135deg, currentColor 0%, rgba(255,255,255,0.5) 50%, currentColor 100%);
+  }
+
+  .pattern-icon {
+    font-size: 24px;
+    opacity: 0.7;
+  }
+}
+
+.cor-nome {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.passo-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  margin-top: auto;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.btn-primary {
+    background-color: #d32f2f;
+    color: white;
+
+    &:hover {
+      background-color: #b71c1c;
+    }
+  }
+
+  &.btn-secondary {
+    background-color: #f5f5f5;
+    color: #333;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+}
+

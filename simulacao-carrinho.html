@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENZA - Simulação de Carrinho (WordPress/WooCommerce)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .carrinho-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .carrinho-section h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .produto-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .produto-item:last-child {
+            border-bottom: none;
+        }
+
+        .produto-nome {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .produto-valor {
+            font-size: 16px;
+            font-weight: 600;
+            color: #d32f2f;
+        }
+
+        .carrinho-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #fff5f5;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid #d32f2f;
+        }
+
+        .total-label {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .total-valor {
+            font-size: 24px;
+            font-weight: 700;
+            color: #d32f2f;
+        }
+
+        .personalizacao-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .personalizacao-section h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .btn-personalizar {
+            background-color: #d32f2f;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-personalizar:hover {
+            background-color: #b71c1c;
+        }
+
+        .btn-personalizar:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Modal do Iframe */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 900px;
+            height: 90%;
+            max-height: 700px;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: #333;
+            font-size: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background-color: #f5f5f5;
+        }
+
+        .modal-iframe {
+            width: 100%;
+            height: calc(100% - 70px);
+            border: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Área de Log */
+        .log-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .log-section h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .log-container {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .log-entry {
+            padding: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid #d32f2f;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .log-entry.success {
+            border-left-color: #4caf50;
+        }
+
+        .log-entry.error {
+            border-left-color: #f44336;
+        }
+
+        .log-entry .log-time {
+            color: #999;
+            font-size: 10px;
+        }
+
+        .log-entry .log-data {
+            margin-top: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .btn-limpar-log {
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-limpar-log:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🛍️ SENZA - Simulação de Carrinho</h1>
+            <p>Esta página simula o ambiente WordPress/WooCommerce para testes de integração</p>
+        </div>
+
+        <!-- Seção do Carrinho -->
+        <div class="carrinho-section">
+            <h2>Meu Carrinho</h2>
+            <div id="produtos-lista">
+                <div class="produto-item">
+                    <span class="produto-nome">Sabonete Líquido Sândalo & Rosa</span>
+                    <span class="produto-valor">R$ 89,90</span>
+                </div>
+                <div class="produto-item">
+                    <span class="produto-nome">Manteiga Corporal Sândalo & Figo</span>
+                    <span class="produto-valor">R$ 79,20</span>
+                </div>
+            </div>
+            <div class="carrinho-total">
+                <span class="total-label">Total:</span>
+                <span class="total-valor" id="total-carrinho">R$ 169,10</span>
+            </div>
+        </div>
+
+        <!-- Seção de Personalização -->
+        <div class="personalizacao-section">
+            <h2>Personalização de Presente</h2>
+            <button class="btn-personalizar" id="btn-personalizar" onclick="abrirPersonalizacao()">
+                Personalizar Presente
+            </button>
+        </div>
+
+        <!-- Área de Log -->
+        <div class="log-section">
+            <h2>Log de Comunicação (postMessage)</h2>
+            <div class="log-container" id="log-container">
+                <div class="log-entry">
+                    <div class="log-time">Aguardando comunicação...</div>
+                </div>
+            </div>
+            <button class="btn-limpar-log" onclick="limparLog()">Limpar Log</button>
+        </div>
+    </div>
+
+    <!-- Modal com Iframe -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Personalize seu Presente</h3>
+                <button class="modal-close" onclick="fecharPersonalizacao()">&times;</button>
+            </div>
+            <iframe 
+                id="iframe-personalizacao" 
+                class="modal-iframe"
+                src="http://localhost:4200"
+                title="Personalização de Presentes">
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Script de Integração Angular/WordPress
+         * Este script simula o ambiente WordPress/WooCommerce
+         * e escuta os postMessages do módulo Angular
+         */
+
+        // Configurações
+        const URL_ORIGEM_ANGULAR = 'http://localhost:4200';
+        const URL_BASE_WP = 'http://127.0.0.1:5500'; // Para testes locais
+
+        // Elementos do DOM
+        const modalOverlay = document.getElementById('modal-overlay');
+        const iframePersonalizacao = document.getElementById('iframe-personalizacao');
+        const logContainer = document.getElementById('log-container');
+        const totalCarrinho = document.getElementById('total-carrinho');
+        const produtosLista = document.getElementById('produtos-lista');
+
+        /**
+         * Adiciona uma entrada no log
+         */
+        function adicionarLog(mensagem, tipo = 'info', dados = null) {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${tipo}`;
+            
+            const time = new Date().toLocaleTimeString('pt-BR');
+            logEntry.innerHTML = `
+                <div class="log-time">[${time}] ${mensagem}</div>
+                ${dados ? `<div class="log-data">${JSON.stringify(dados, null, 2)}</div>` : ''}
+            `;
+            
+            logContainer.insertBefore(logEntry, logContainer.firstChild);
+            
+            // Limita a 50 entradas
+            while (logContainer.children.length > 50) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }
+
+        /**
+         * Limpa o log
+         */
+        function limparLog() {
+            logContainer.innerHTML = '<div class="log-entry"><div class="log-time">Log limpo</div></div>';
+        }
+
+        /**
+         * Abre o modal de personalização
+         */
+        function abrirPersonalizacao() {
+            modalOverlay.classList.add('active');
+            adicionarLog('Modal de personalização aberto', 'info');
+        }
+
+        /**
+         * Fecha o modal de personalização
+         */
+        function fecharPersonalizacao() {
+            modalOverlay.classList.remove('active');
+            adicionarLog('Modal de personalização fechado', 'info');
+        }
+
+        /**
+         * Atualiza o carrinho com os dados de personalização
+         */
+        function atualizarCarrinho(dados) {
+            // Adiciona item de personalização ao carrinho
+            if (dados.embalagem && dados.embalagem.tipo !== 'nenhuma') {
+                const itemEmbalagem = document.createElement('div');
+                itemEmbalagem.className = 'produto-item';
+                itemEmbalagem.innerHTML = `
+                    <span class="produto-nome">${dados.embalagem.nome}</span>
+                    <span class="produto-valor">R$ ${dados.embalagem.valor.toFixed(2).replace('.', ',')}</span>
+                `;
+                produtosLista.appendChild(itemEmbalagem);
+            }
+
+            // Atualiza o total
+            const novoTotal = dados.valorTotal || 0;
+            totalCarrinho.textContent = `R$ ${novoTotal.toFixed(2).replace('.', ',')}`;
+            
+            adicionarLog('Carrinho atualizado com personalização', 'success', {
+                valorTotal: novoTotal,
+                embalagem: dados.embalagem
+            });
+        }
+
+        /**
+         * Escuta mensagens do iframe Angular
+         */
+        window.addEventListener('message', function(event) {
+            // Validação de segurança: verifica a origem da mensagem
+            if (event.origin !== URL_ORIGEM_ANGULAR) {
+                adicionarLog(
+                    `Mensagem rejeitada: origem inválida (${event.origin})`, 
+                    'error'
+                );
+                console.warn('Mensagem rejeitada - origem inválida:', event.origin);
+                return;
+            }
+
+            // Verifica se a mensagem é do tipo esperado
+            if (event.data && event.data.tipo === 'personalizacao-finalizada') {
+                adicionarLog('Mensagem recebida do Angular', 'success', event.data);
+                
+                // Processa os dados de personalização
+                const dadosPersonalizacao = event.data;
+                
+                // TODO: Aqui seria feita a integração real com WooCommerce/Tray
+                // Exemplo:
+                // jQuery.ajax({
+                //     url: '/wp-json/wc/v3/cart/add-item',
+                //     method: 'POST',
+                //     data: dadosPersonalizacao,
+                //     success: function(response) {
+                //         console.log('Item adicionado ao carrinho:', response);
+                //         atualizarCarrinho(dadosPersonalizacao);
+                //     },
+                //     error: function(error) {
+                //         console.error('Erro ao adicionar ao carrinho:', error);
+                //     }
+                // });
+
+                // Por enquanto, apenas simula a atualização do carrinho
+                atualizarCarrinho(dadosPersonalizacao);
+                
+                // Fecha o modal após sucesso
+                setTimeout(() => {
+                    fecharPersonalizacao();
+                    adicionarLog('Personalização concluída com sucesso!', 'success');
+                }, 500);
+                
+            } else {
+                adicionarLog('Mensagem recebida (tipo desconhecido)', 'info', event.data);
+            }
+        });
+
+        /**
+         * Fecha o modal ao clicar fora dele
+         */
+        modalOverlay.addEventListener('click', function(event) {
+            if (event.target === modalOverlay) {
+                fecharPersonalizacao();
+            }
+        });
+
+        /**
+         * Inicialização
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            adicionarLog('Sistema de integração inicializado', 'success');
+            adicionarLog(`Aguardando mensagens de: ${URL_ORIGEM_ANGULAR}`, 'info');
+            adicionarLog(`URL base WordPress: ${URL_BASE_WP}`, 'info');
+        });
+
+        // Exibe no console para debugging
+        console.log('🔧 Sistema de integração SENZA inicializado');
+        console.log(`📡 Aguardando postMessages de: ${URL_ORIGEM_ANGULAR}`);
+        console.log(`🌐 URL base WordPress: ${URL_BASE_WP}`);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,192 @@
+.cartao-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  perspective: 1000px;
+}
+
+.cartao-wrapper {
+  position: relative;
+  width: 400px;
+  height: 280px;
+  transform-style: preserve-3d;
+}
+
+/* Cartão Fechado (Frente) */
+.cartao-frente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #c62828;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+/* Padrão Floral */
+.cartao-padrao-floral {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 15% 25%, rgba(255, 255, 255, 0.15) 3px, transparent 3px),
+    radial-gradient(circle at 85% 75%, rgba(255, 255, 255, 0.15) 3px, transparent 3px),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 2px, transparent 2px);
+  background-size: 40px 40px, 40px 40px, 20px 20px;
+  background-position: 0 0, 20px 20px, 10px 10px;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* Nome do Destinatário na Frente */
+.cartao-nome-front {
+  position: absolute;
+  z-index: 2;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+}
+
+.destinatario-front {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Logo SENZA */
+.cartao-logo {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 4px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Cartão Aberto (Interior) */
+.cartao-interior {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #c62828;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+}
+
+/* Nomes no Interior do Cartão */
+.cartao-nome-interior {
+  position: absolute;
+  z-index: 2;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Destinatário no lado esquerdo */
+.destinatario-interior-left {
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Remetente no lado direito */
+.remetente-interior-right {
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Mensagem no Centro */
+.cartao-mensagem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: white;
+  text-align: center;
+  max-width: 60%;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+/* Efeito de abertura do cartão (opcional - para animação) */
+.cartao-wrapper:hover .cartao-frente {
+  transform: rotateY(-180deg);
+  transition: transform 0.6s;
+}
+
+.cartao-wrapper:hover .cartao-interior {
+  transform: rotateY(0deg);
+  transition: transform 0.6s;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .cartao-wrapper {
+    width: 300px;
+    height: 210px;
+  }
+
+  .cartao-nome-front {
+    font-size: 22px;
+  }
+
+  .cartao-nome-interior {
+    font-size: 18px;
+  }
+
+  .cartao-mensagem {
+    font-size: 14px;
+    max-width: 70%;
+  }
+
+  .destinatario-interior-left {
+    left: 20px;
+  }
+
+  .remetente-interior-right {
+    right: 20px;
+  }
+}
+

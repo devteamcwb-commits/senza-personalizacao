@@ -1,0 +1,39 @@
+<div class="cartao-container">
+  <div class="cartao-wrapper">
+    <!-- Cartão Fechado (Frente) -->
+    <div class="cartao-frente" [style.background-color]="obterCorCartao()">
+      <!-- Padrão Floral (apenas para cor 1) -->
+      <div class="cartao-padrao-floral" *ngIf="isFloral()"></div>
+      
+      <!-- Nome do Destinatário (Frente) -->
+      <div class="cartao-nome-front destinatario-front">
+        {{ destinatarioNome || 'Nome do Destinatário' }}
+      </div>
+
+      <!-- Logo SENZA -->
+      <div class="cartao-logo">SENZA</div>
+    </div>
+
+    <!-- Cartão Aberto (Interior) -->
+    <div class="cartao-interior" [style.background-color]="obterCorCartao()">
+      <!-- Padrão Floral (apenas para cor 1) -->
+      <div class="cartao-padrao-floral" *ngIf="isFloral()"></div>
+
+      <!-- Nome do Destinatário (Interior - Esquerda) -->
+      <div class="cartao-nome-interior destinatario-interior-left">
+        {{ destinatarioNome || 'Nome do Destinatário' }}
+      </div>
+
+      <!-- Nome do Remetente (Interior - Direita) -->
+      <div class="cartao-nome-interior remetente-interior-right">
+        {{ remetenteNome || 'Nome do Remetente' }}
+      </div>
+
+      <!-- Mensagem (Centro) -->
+      <div class="cartao-mensagem">
+        {{ mensagem || 'Sua mensagem aparecerá aqui...' }}
+      </div>
+    </div>
+  </div>
+</div>
+

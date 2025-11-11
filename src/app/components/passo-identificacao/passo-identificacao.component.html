@@ -1,0 +1,54 @@
+<div class="passo-container">
+  <div class="passo-header">
+    <h2>Comece sua personalização</h2>
+    <p class="subtitle">Em poucos passos, seu presente ganha alma.</p>
+  </div>
+
+  <div class="passo-content">
+    <div class="form-group">
+      <label for="destinatario">Para quem é o presente?</label>
+      <input 
+        type="text" 
+        id="destinatario"
+        [(ngModel)]="destinatarioNome"
+        placeholder="Digite o nome do destinatário"
+        class="form-input"
+        (keyup.enter)="avancar()">
+    </div>
+
+    <div class="form-group">
+      <label for="remetente">De quem devemos dizer que é?</label>
+      <input 
+        type="text" 
+        id="remetente"
+        [(ngModel)]="remetenteNome"
+        placeholder="Digite seu nome"
+        class="form-input"
+        (keyup.enter)="avancar()">
+    </div>
+
+    <div class="image-placeholder">
+      <div class="gift-image">
+        <span>🎁</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="passo-actions">
+    <button 
+      type="button" 
+      class="btn btn-secondary" 
+      (click)="voltarPasso()"
+      *ngIf="false">
+      VOLTAR
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-primary" 
+      (click)="avancar()"
+      [disabled]="!podeAvancar()">
+      AVANÇAR
+    </button>
+  </div>
+</div>
+

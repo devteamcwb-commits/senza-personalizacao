@@ -1,0 +1,44 @@
+<div class="passo-container">
+  <div class="passo-header">
+    <h2>Escolha o tipo de mensagem</h2>
+  </div>
+
+  <div class="passo-content">
+    <div class="opcoes-mensagem">
+      <div 
+        class="opcao-card"
+        [class.selected]="tipoMensagem === 'inspirar'"
+        (click)="selecionarTipo('inspirar')">
+        <div class="opcao-icon">✨</div>
+        <h3>Deseja a Senza te inspirar</h3>
+        <p>Deixe-nos criar uma mensagem especial baseada na intenção do presente</p>
+      </div>
+
+      <div 
+        class="opcao-card"
+        [class.selected]="tipoMensagem === 'pessoal'"
+        (click)="selecionarTipo('pessoal')">
+        <div class="opcao-icon">✍️</div>
+        <h3>Escreva uma mensagem pessoal</h3>
+        <p>Personalize sua mensagem com suas próprias palavras</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="passo-actions">
+    <button 
+      type="button" 
+      class="btn btn-secondary" 
+      (click)="voltarPasso()">
+      VOLTAR
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-primary" 
+      (click)="avancar()"
+      [disabled]="!podeAvancar()">
+      AVANÇAR
+    </button>
+  </div>
+</div>
+

@@ -1,0 +1,84 @@
+<div class="passo-container">
+  <div class="passo-header">
+    <h2 *ngIf="getTipoMensagem() === 'inspirar'">Escolha a intenção</h2>
+    <h2 *ngIf="getTipoMensagem() === 'pessoal'">Escreva sua mensagem pessoal</h2>
+  </div>
+
+  <div class="passo-content">
+    <!-- Mensagem Inspirada (Intenção) -->
+    <div *ngIf="getTipoMensagem() === 'inspirar'" class="intencao-section">
+      <div class="form-group">
+        <label for="intencao">Selecione a intenção do presente:</label>
+        <select 
+          id="intencao"
+          [(ngModel)]="intencaoSelecionada"
+          (ngModelChange)="onIntencaoChange()"
+          class="form-select">
+          <option value="">Selecione uma intenção</option>
+          <option *ngFor="let intencao of intencoes" [value]="intencao.id">
+            {{ intencao.nome }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group" *ngIf="intencaoSelecionada">
+        <label for="significado">Escreva um significado para sua intenção (opcional):</label>
+        <textarea 
+          id="significado"
+          [(ngModel)]="intencaoSignificado"
+          placeholder="Adicione um significado personalizado..."
+          class="form-textarea"
+          rows="3"></textarea>
+      </div>
+
+      <div class="mensagem-preview" *ngIf="intencaoSelecionada">
+        <h3>Mensagem:</h3>
+        <p class="mensagem-texto">{{ obterMensagemCartao() }}</p>
+      </div>
+    </div>
+
+    <!-- Mensagem Pessoal -->
+    <div *ngIf="getTipoMensagem() === 'pessoal'" class="mensagem-pessoal-section">
+      <div class="form-group">
+        <label for="mensagem">Sua mensagem pessoal:</label>
+        <textarea 
+          id="mensagem"
+          [(ngModel)]="mensagemPessoal"
+          (ngModelChange)="onMensagemChange()"
+          placeholder="Digite sua mensagem pessoal..."
+          class="form-textarea"
+          rows="6"
+          maxlength="300"></textarea>
+        <div class="char-count">{{ mensagemPessoal.length }}/300</div>
+      </div>
+    </div>
+
+    <!-- Pré-visualização do Cartão -->
+    <div class="preview-section" *ngIf="mostrarPreview && podeAvancar()">
+      <h3>Pré-visualização do Cartão</h3>
+      <app-cartao-visualizacao
+        [destinatarioNome]="destinatarioNome"
+        [remetenteNome]="remetenteNome"
+        [mensagem]="obterMensagemCartao()"
+        [corCartao]="corCartao">
+      </app-cartao-visualizacao>
+    </div>
+  </div>
+
+  <div class="passo-actions">
+    <button 
+      type="button" 
+      class="btn btn-secondary" 
+      (click)="voltarPasso()">
+      VOLTAR
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-primary" 
+      (click)="avancar()"
+      [disabled]="!podeAvancar()">
+      AVANÇAR
+    </button>
+  </div>
+</div>
+

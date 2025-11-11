@@ -1,0 +1,48 @@
+<div class="passo-container">
+  <div class="passo-header">
+    <h2>Gostaria de uma embalagem de presente?</h2>
+  </div>
+
+  <div class="passo-content">
+    <div class="embalagens-grid">
+      <div 
+        *ngFor="let embalagem of opcoesEmbalagem" 
+        class="embalagem-card"
+        [class.selected]="embalagemSelecionada === embalagem.id"
+        (click)="selecionarEmbalagem(embalagem.id)">
+        <div class="embalagem-icon">{{ embalagem.imagem }}</div>
+        <h3>{{ embalagem.nome }}</h3>
+        <p class="embalagem-valor" *ngIf="embalagem.valor > 0">
+          {{ formatarValor(embalagem.valor) }}
+        </p>
+        <p class="embalagem-gratis" *ngIf="embalagem.valor === 0">
+          Grátis
+        </p>
+      </div>
+    </div>
+
+    <!-- Preview da embalagem selecionada -->
+    <div class="preview-embalagem" *ngIf="embalagemSelecionada !== 'nenhuma'">
+      <div class="preview-box">
+        <div class="box-pattern"></div>
+        <div class="box-logo">SENZA</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="passo-actions">
+    <button 
+      type="button" 
+      class="btn btn-secondary" 
+      (click)="voltarPasso()">
+      VOLTAR
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-primary" 
+      (click)="avancar()">
+      AVANÇAR
+    </button>
+  </div>
+</div>
+

@@ -1,0 +1,92 @@
+<div class="passo-container">
+  <div class="passo-header">
+    <h2>Revise seus itens antes de seguir para o checkout</h2>
+  </div>
+
+  <div class="passo-content">
+    <!-- Resumo da Personalização -->
+    <div class="resumo-section">
+      <h3>Personalização do Presente</h3>
+      
+      <div class="resumo-item">
+        <span class="label">Destinatário:</span>
+        <span class="value">{{ dados.destinatarioNome }}</span>
+      </div>
+
+      <div class="resumo-item">
+        <span class="label">Remetente:</span>
+        <span class="value">{{ dados.remetenteNome }}</span>
+      </div>
+
+      <div class="resumo-item">
+        <span class="label">Cartão Cortesia:</span>
+        <span class="value">{{ obterNomeCorCartao() }}</span>
+      </div>
+
+      <div class="resumo-item" *ngIf="dados.intencao">
+        <span class="label">Intenção:</span>
+        <span class="value">{{ dados.intencao }}</span>
+      </div>
+
+      <div class="resumo-item" *ngIf="dados.mensagemPessoal">
+        <span class="label">Mensagem Pessoal:</span>
+        <span class="value mensagem-texto">{{ dados.mensagemPessoal }}</span>
+      </div>
+    </div>
+
+    <!-- Pré-visualização do Cartão -->
+    <div class="preview-section">
+      <h3>Pré-visualização do Cartão</h3>
+      <app-cartao-visualizacao
+        [destinatarioNome]="dados.destinatarioNome || ''"
+        [remetenteNome]="dados.remetenteNome || ''"
+        [mensagem]="obterMensagem()"
+        [corCartao]="dados.cartaoCortesiaCor || ''">
+      </app-cartao-visualizacao>
+    </div>
+
+    <!-- Produtos -->
+    <div class="produtos-section">
+      <h3>Produtos</h3>
+      <div class="produtos-list">
+        <div *ngFor="let produto of dados.produtos" class="produto-item">
+          <span class="produto-nome">{{ produto.nome }}</span>
+          <span class="produto-valor">{{ formatarValor(produto.valor) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Embalagem -->
+    <div class="embalagem-section" *ngIf="dados.embalagem && dados.embalagem.tipo !== 'nenhuma'">
+      <h3>Embalagem</h3>
+      <div class="embalagem-item">
+        <span class="embalagem-nome">{{ dados.embalagem.nome }}</span>
+        <span class="embalagem-valor">{{ formatarValor(dados.embalagem.valor) }}</span>
+      </div>
+    </div>
+
+    <!-- Total -->
+    <div class="total-section">
+      <div class="total-item">
+        <span class="total-label">Total:</span>
+        <span class="total-valor">{{ formatarValor(valorTotal) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="passo-actions">
+    <button 
+      type="button" 
+      class="btn btn-secondary" 
+      (click)="voltarPasso()">
+      VOLTAR
+    </button>
+    <button 
+      type="button" 
+      class="btn btn-primary btn-checkout" 
+      (click)="finalizar()">
+      CHECK-OUT
+    </button>
+  </div>
+</div>
+
